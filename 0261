@@ -1,0 +1,55 @@
+class Solution {
+    HashMap<Integer, HashSet<Integer>> graph = new HashMap<Integer, HashSet<Integer>>();
+    int[] visited; // 0: unvisited; 1: visiting; 2: visited
+    public boolean validTree(int n, int[][] edges) {
+        if (n == 1) return true;
+        if (edges.length == 0) return false;
+        visited = new int[n];
+        for (int[] a : edges){
+            if(graph.containsKey(a[0])){
+                HashSet<Integer> set = graph.get(a[0]);
+                set.add(a[1]);
+                graph.put(a[0], set);
+            } else{
+                HashSet<Integer> set = new HashSet<Integer>();
+                set.add(a[1]);
+                graph.put(a[0], set);
+            }
+
+            if(graph.containsKey(a[1])){
+                HashSet<Integer> set = graph.get(a[1]);
+                set.add(a[0]);
+                graph.put(a[1], set);
+            } else{
+                HashSet<Integer> set = new HashSet<Integer>();
+                set.add(a[0]);
+                graph.put(a[1], set);
+            }
+        }
+        boolean res = dfs(edges[0][0], edges[0][0]);
+        for (int i = 0; i < n; i++){
+            if (visited[i] != 2){
+                return false;
+            }
+        }
+        return res;
+    }
+
+    public boolean dfs(int cur, int parent){
+        if (visited[cur] != 0){
+            return false;
+        }
+        visited[cur] = 1;
+        if (graph.containsKey(cur)){
+            for (int sub : graph.get(cur)){
+                if (sub != parent){
+                    if(dfs(sub, cur) == false){
+                        return false;
+                    }
+                }
+            }
+        }
+        visited[cur] = 2;
+        return true;
+    }
+}
