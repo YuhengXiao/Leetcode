@@ -1,0 +1,16 @@
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        return dfs(s, t);
+    }
+    public boolean dfs(String s, String t){
+        if (s.equals(t)) return false;
+        int sp = 0, tp = 0;
+        while(sp < s.length() && tp < t.length() && s.charAt(sp) == t.charAt(tp)){
+            sp++;
+            tp++;
+        }
+        if ((sp + 1 >= s.length()) && (tp + 1 >= t.length())) return true;
+        if (Math.abs( (s.length() - sp) - (t.length() - tp) ) > 1) return false;
+        return s.substring(sp, s.length()).equals(t.substring(tp + 1, t.length())) || s.substring(sp + 1, s.length()).equals(t.substring(tp, t.length())) || s.substring(sp + 1, s.length()).equals(t.substring(tp + 1, t.length()));
+    }
+}
