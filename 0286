@@ -1,0 +1,30 @@
+class Solution {
+    int[][] dirs = new int[][]{{0,-1},{0,1},{1,0},{-1,0}};
+    public void wallsAndGates(int[][] rooms) {
+        Queue<int[]> queue = new LinkedList<int[]>();
+        for (int i = 0; i < rooms.length; i++){
+            for (int j = 0; j < rooms[0].length; j++){
+                if (rooms[i][j] == 0){
+                    queue.add(new int[]{i, j});
+                }
+            }
+        }
+        int level = 1;
+        int len = queue.size();
+        while(!queue.isEmpty()){
+            for (int i = 0; i < len; i++){
+                int[] cur = queue.remove();
+                for (int[] dir : dirs){
+                    int xx = cur[0] + dir[0];
+                    int yy = cur[1] + dir[1];
+                    if (xx >= 0 && xx < rooms.length && yy >=0 && yy < rooms[0].length && rooms[xx][yy] == 2147483647){
+                        rooms[xx][yy] = level;
+                        queue.add(new int[]{xx, yy});
+                    }
+                }
+            }
+            len = queue.size();
+            level++;
+        }
+    }
+}
